@@ -1,49 +1,63 @@
+import { Routes, Route, NavLink } from 'react-router-dom';
 import { useState,useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
+import HomePage  from "./pages/HomePage/HomePage";
+import Navigation from "./components/Navigation/Navigation";
+import  MovieDetailsPage from './pages/MovieDetailsPage/MovieDetailsPage'
+
 import './App.css'
-import fetchFilmsWithTopic from './utils/images-api'
 
+import fetchMovies from './utils/movies-api'
 function App() {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    const handleSearch = async () => {
-      try {
-        
-          const data = await fetchFilmsWithTopic();
-         console.log(data)
-      } catch (error) {
-        
-      } finally {
-       
-      }
-    };
 
-    handleSearch();
-  }, []);
 
+  const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [moviesList,setMoviesList]=useState([]);
+    const [genres,setGenres] = useState([])
+    const path="trending/movie/day";
+    useEffect(() => {
+        const getMovies = async (query) => {
+          try {
+           
+              setError(false);
+              setLoading(true);
+              const genresList = await fetchMovies("genre/movie/list");
+              setGenres(() => {
+                return [...genresList.genres];
+              });
+              const data = await fetchMovies(query);
+              // console.log(genresList.genres)
+              if (data.results.length === 0) {
+                toast.error(`Error.Nothing find`, { position: "top-left" });
+              }
+             
+            
+              setMoviesList(() => {
+                return [...data.results];
+              });
+          
+          } catch (error) {
+            setError(true);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        getMovies(path);
+      }, []);
+ 
+  
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+       <Navigation/>
+      <Routes>
+        <Route path="/" element={<HomePage isLoading={loading} trendingMovies={moviesList}/>} />
+        {/* <Route path="'/movies'" element={<Movies />} />
+        <Route path="/products" element={<Products />} /> */}
+         <Route path="/movies/:id" element={<MovieDetailsPage movies={moviesList} genresData={genres} />} />
+        {/* <Route path="*" element={<NotFound />} /> */}
+      </Routes>
     </>
   )
 }
