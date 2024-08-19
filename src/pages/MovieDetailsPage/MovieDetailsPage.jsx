@@ -7,23 +7,20 @@ function MovieDetailsPage({ movies, genresData }) {
   const { id } = useParams();
   const pathToImage = "https://image.tmdb.org/t/p/w500/";
   const selectedMovie = movies.find((movie) => +movie.id === +id);
-  // console.log(genresData);
-  // console.log(selectedMovie);
+  const {poster_path,title,release_date,vote_average,overview,genre_ids}=selectedMovie
 
   return (
     <main>
       <div>
-        <img src={`${pathToImage}${selectedMovie.poster_path}`} />
+        <img src={`${pathToImage}${poster_path}`} />
       </div>
       <div>
-        <h2>{`${selectedMovie.title}(${formatCreateDate(
-          selectedMovie.release_date
-        )})`}</h2>
-        <p>{`User Score:${selectedMovie.vote_average * 10}%`}</p>
+        <h2>{`${title}(${formatCreateDate(release_date)})`}</h2>
+        <p>{`User Score:${Math.round(vote_average * 10)}%`}</p>
         <p>Overview</p>
-        <p>{selectedMovie.overview}</p>
+        <p>{overview}</p>
         <p>Genres</p>
-        <p>{`${genresNames(genresData, selectedMovie.genre_ids)}`}</p>
+        <p>{`${genresNames(genresData, genre_ids)}`}</p>
       </div>
 
       <ul>

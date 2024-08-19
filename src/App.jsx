@@ -14,8 +14,25 @@ function App() {
   const [error, setError] = useState(false);
   const [moviesList, setMoviesList] = useState([]);
   const [genres, setGenres] = useState([]);
-  const [searchPath, setSearchPath] = useState("");
+
+  const [queryData, setQueryData] = useState({});
   const [casts, setCasts] = useState([]);
+
+  function getMovieList() {
+    const queryParams = {
+      path: "trending/movie/day",
+      dataKey: "results",
+      setData: setMoviesList,
+    };
+    setQueryData({ ...queryParams });
+  }
+
+  function getCastData(params) {
+    const queryParams = {
+      setData: setCasts,
+    };
+    setQueryData({ ...params, ...queryParams });
+  }
 
   useEffect(() => {
     const getGenreList = async () => {
@@ -39,34 +56,17 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const getData = async (query) => {
+    const getData = async ({ path, dataKey, setData }) => {
       try {
         setError(false);
         setLoading(true);
 
-        if (searchPath === "trending/movie/day") {
-          const data = await fetchMovies(query);
+        if (path) {
+          const data = await fetchMovies(path);
 
-          if (data.results.length === 0) {
-            toast.error(`Error.Nothing find`, { position: "top-left" });
-          }
-
-          setMoviesList(() => {
-            return [...data.results];
+          setData(() => {
+            return [...data[dataKey]];
           });
-        }
-
-        if (searchPath.slice(0, 5) === "movie") {
-          const data = await fetchMovies(query);
-
-          if (data.results.length === 0) {
-            toast.error(`Error.Nothing find`, { position: "top-left" });
-          }
-
-          setCasts(() => {
-            return [...data.results];
-          });
-          console.log(casts)
         }
       } catch (error) {
         setError(true);
@@ -75,8 +75,8 @@ function App() {
       }
     };
 
-    getData(searchPath);
-  }, [searchPath]);
+    getData(queryData);
+  }, [queryData]);
 
   return (
     <>
@@ -88,7 +88,7 @@ function App() {
             <HomePage
               isLoading={loading}
               trendingMovies={moviesList}
-              getMovies={setSearchPath}
+              getMovies={getMovieList}
             />
           }
         />
@@ -104,7 +104,7 @@ function App() {
         >
           <Route
             path="casts"
-            element={<MovieCast getCasts={setSearchPath} />}
+            element={<MovieCast getCasts={getCastData} castsData={casts} />}
           />
           <Route path="reviews" element={<MovieReviews />} />
         </Route>
