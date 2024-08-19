@@ -4,9 +4,16 @@ import { InfinitySpin } from "react-loader-spinner";
 import css from './HomePage.module.css'
 
 import MovieList from '../../components/MovieList/MovieList'
+import { useEffect } from "react";
+
+function HomePage({isLoading,trendingMovies,getMovies}) {
+  const path = "trending/movie/day";
+  useEffect(() => {
+    getMovies(path)
+  },[])
 
 
-function HomePage({isLoading,trendingMovies}) {
+ 
   
 
 
