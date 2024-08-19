@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import formatCreateDate from '../../utils/formatDate'
+import genresNames from '../../utils/genresNames'
 
 function MovieDetailsPage({movies,genresData}) {
     const { id } = useParams();
@@ -22,7 +23,7 @@ function MovieDetailsPage({movies,genresData}) {
                 <p>Overview</p>
                 <p>{selectedMovie.overview}</p>
                 <p>Genres</p>
-                <p>{``}</p>
+                <p>{`${genresNames(genresData,selectedMovie.genre_ids)}`}</p>
 
             </div>
 
