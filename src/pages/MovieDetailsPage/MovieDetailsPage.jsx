@@ -1,11 +1,14 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 import formatCreateDate from "../../utils/formatDate";
 import genresNames from "../../utils/genresNames";
+import  BackLink  from "../../components/BackLink/BackLink";
 
 function MovieDetailsPage({ movies, genresData, getGenres }) {
   const { id } = useParams();
+  const location = useLocation();
+  const backLinkHref = location.state ?? "/";
   const pathToImage = "https://image.tmdb.org/t/p/w500/";
   const selectedMovie = movies.find((movie) => +movie.id === +id);
   const {poster_path,title,release_date,vote_average,overview,genre_ids}=selectedMovie
@@ -16,12 +19,14 @@ function MovieDetailsPage({ movies, genresData, getGenres }) {
 
   return (
     <main>
+       <BackLink to={backLinkHref}>Go back</BackLink>
+      
       <div>
         <img src={`${pathToImage}${poster_path}`} />
       </div>
       <div>
         <h2>{`${title}(${formatCreateDate(release_date)})`}</h2>
-        <p>{`User Score:${Math.round(vote_average * 10)}%`}</p>
+        <p>{`User Score: ${Math.round(vote_average * 10)}%`}</p>
         <p>Overview</p>
         <p>{overview}</p>
         <p>Genres</p>

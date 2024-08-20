@@ -17,7 +17,7 @@ function App() {
 
   const [queryData, setQueryData] = useState({});
   const [casts, setCasts] = useState([]);
-
+  const [reviwes, setReviewes] = useState([]);
   function getMovieList() {
     const queryParams = {
       path: "trending/movie/day",
@@ -40,30 +40,15 @@ function App() {
       dataKey: "genres",
       setData: setGenres,
     };
-    setQueryData({ ...queryParams })
-
+    setQueryData({ ...queryParams });
   }
 
-  // useEffect(() => {
-  //   const getGenreList = async () => {
-  //     // if (searchPath==="genre/movie/list") {
-  //     try {
-  //       setError(false);
-  //       setLoading(true);
-  //       const genresList = await fetchMovies("genre/movie/list");
-  //       setGenres(() => {
-  //         return [...genresList.genres];
-  //       });
-  //     } catch (error) {
-  //       setError(true);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   // }
-
-  //   getGenreList();
-  // }, []);
+  function getReviewsData(params) {
+    const queryParams = {
+      setData: setReviewes,
+    };
+    setQueryData({ ...params, ...queryParams });
+  }
 
   useEffect(() => {
     const getData = async ({ path, dataKey, setData }) => {
@@ -73,6 +58,7 @@ function App() {
 
         if (path) {
           const data = await fetchMovies(path);
+          
 
           setData(() => {
             return [...data[dataKey]];
@@ -99,25 +85,31 @@ function App() {
               isLoading={loading}
               trendingMovies={moviesList}
               getMovies={getMovieList}
-              
             />
           }
         />
-        {/* <Route path="'/movies'" element={<Movies />} />
-        <Route path="/products" element={<Products />} /> */}
-        {/* <Route
-          path="/movies/:id"
-          element={<MovieDetailsPage movies={moviesList} genresData={genres} />}
-        /> */}
+        <Route path="/movies" element={<MoviesPage />} />
+        
         <Route
           path="/movies/:id"
-          element={<MovieDetailsPage movies={moviesList} getGenres={getGenreList} genresData ={genres}  />}
+          element={
+            <MovieDetailsPage
+              movies={moviesList}
+              getGenres={getGenreList}
+              genresData={genres}
+            />
+          }
         >
           <Route
             path="casts"
             element={<MovieCast getCasts={getCastData} castsData={casts} />}
           />
-          <Route path="reviews" element={<MovieReviews />} />
+          <Route
+            path="reviews"
+            element={
+              <MovieReviews getReviews={getReviewsData} reviwesData={reviwes}  />
+            }
+          />
         </Route>
 
         {/* <Route path="*" element={<NotFound />} /> */}
