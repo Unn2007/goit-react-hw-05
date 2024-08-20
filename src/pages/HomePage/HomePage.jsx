@@ -5,10 +5,11 @@ import css from "./HomePage.module.css";
 import MovieList from "../../components/MovieList/MovieList";
 import { useEffect } from "react";
 
-function HomePage({ isLoading, trendingMovies, getMovies }) {
+function HomePage({ isLoading, trendingMovies, getMovies}) {
   
   useEffect(() => {
     getMovies();
+   
   }, []);
 
   return (

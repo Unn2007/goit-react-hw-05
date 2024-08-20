@@ -1,13 +1,18 @@
 import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 import formatCreateDate from "../../utils/formatDate";
 import genresNames from "../../utils/genresNames";
 
-function MovieDetailsPage({ movies, genresData }) {
+function MovieDetailsPage({ movies, genresData, getGenres }) {
   const { id } = useParams();
   const pathToImage = "https://image.tmdb.org/t/p/w500/";
   const selectedMovie = movies.find((movie) => +movie.id === +id);
   const {poster_path,title,release_date,vote_average,overview,genre_ids}=selectedMovie
+  useEffect(() => {
+    getGenres();
+   
+  }, []);
 
   return (
     <main>

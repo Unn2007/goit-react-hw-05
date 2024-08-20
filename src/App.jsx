@@ -34,26 +34,36 @@ function App() {
     setQueryData({ ...params, ...queryParams });
   }
 
-  useEffect(() => {
-    const getGenreList = async () => {
-      // if (searchPath==="genre/movie/list") {
-      try {
-        setError(false);
-        setLoading(true);
-        const genresList = await fetchMovies("genre/movie/list");
-        setGenres(() => {
-          return [...genresList.genres];
-        });
-      } catch (error) {
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
+  function getGenreList() {
+    const queryParams = {
+      path: "genre/movie/list",
+      dataKey: "genres",
+      setData: setGenres,
     };
-    // }
+    setQueryData({ ...queryParams })
 
-    getGenreList();
-  }, []);
+  }
+
+  // useEffect(() => {
+  //   const getGenreList = async () => {
+  //     // if (searchPath==="genre/movie/list") {
+  //     try {
+  //       setError(false);
+  //       setLoading(true);
+  //       const genresList = await fetchMovies("genre/movie/list");
+  //       setGenres(() => {
+  //         return [...genresList.genres];
+  //       });
+  //     } catch (error) {
+  //       setError(true);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   // }
+
+  //   getGenreList();
+  // }, []);
 
   useEffect(() => {
     const getData = async ({ path, dataKey, setData }) => {
@@ -89,6 +99,7 @@ function App() {
               isLoading={loading}
               trendingMovies={moviesList}
               getMovies={getMovieList}
+              
             />
           }
         />
@@ -100,7 +111,7 @@ function App() {
         /> */}
         <Route
           path="/movies/:id"
-          element={<MovieDetailsPage movies={moviesList} genresData={genres} />}
+          element={<MovieDetailsPage movies={moviesList} getGenres={getGenreList} genresData ={genres}  />}
         >
           <Route
             path="casts"

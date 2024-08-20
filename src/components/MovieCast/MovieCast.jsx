@@ -14,7 +14,19 @@ console.log(castsData)
         getCasts(queryParams)
       },[])
     return (
-        <div>Csts</div>
+        <div>
+            <ul>
+                {castsData.map(({character,name,profile_path,id})=>{
+                    return (
+                        <li key={id}>
+                            <img src={`https://image.tmdb.org/t/p/w500/${profile_path}`}/>
+                            <p>{`character:${character}`}</p>
+                            <p>{name}</p>
+                        </li>
+                    )
+                })}
+            </ul>
+        </div>
     )
 }
 
