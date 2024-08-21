@@ -1,0 +1,26 @@
+.movieDetalies {
+    display: flex;
+   gap:  20px;
+}
+.thumb {
+    height: 400px;
+    width: 400px;
+  }
+
+  .posterImage {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .movieInfo{
+    text-align: left;
+  }
+
+  .additInfo{
+    text-align: left;
+  }
+
+  .additInfoLink{
+    text-decoration: underline;
+  }

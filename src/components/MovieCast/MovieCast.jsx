@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import imagePlaceholder from '../../assets/image.jpg'
+import css from './MovieCast.module.css'
 
 function MovieCast({getCasts,castsData}) {
     const { id } = useParams();
@@ -23,9 +24,12 @@ function MovieCast({getCasts,castsData}) {
                     const imagePath = (profile_path)?`https://image.tmdb.org/t/p/w500/${profile_path}`:imagePlaceholder
                     return (
                         <li key={id}>
-                            <img src={imagePath}/>
-                            <p>{`character:${character}`}</p>
+                            <div className={css.thumb}>
+                            <img src={imagePath} className={css.actorFoto}/>
+                            </div>
+                           
                             <p>{name}</p>
+                            <p>{`Character: ${character}`}</p>
                         </li>
                     )
                 })}

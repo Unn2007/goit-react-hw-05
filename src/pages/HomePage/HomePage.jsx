@@ -17,7 +17,8 @@ function HomePage({ isLoading, trendingMovies, getMovies}) {
 
   return (
     <main>
-      <h1>Trending today</h1>
+      <section className={css.homePage}>
+      <h1 className={css.homeHeader}>Trending today</h1>
       {isLoading && (
         <InfinitySpin
           visible={true}
@@ -28,6 +29,7 @@ function HomePage({ isLoading, trendingMovies, getMovies}) {
       )}
 
       <MovieList movies={trendingMovies} />
+      </section>
     </main>
   );
 }

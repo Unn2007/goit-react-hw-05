@@ -109,7 +109,7 @@ function App() {
           path="/movies/:id"
           element={
             <MovieDetailsPage 
-              movies={moviesList}
+            trendMovies={moviesList}
               searchedMovies={moviesSearchList}
               getGenres={getGenreList}
               genresData={genres}
