@@ -1,7 +1,11 @@
 .movieDetalies {
     display: flex;
    gap:  20px;
+   border-bottom: 3px solid black;
+   padding-bottom: 10px;
 }
+
+
 .thumb {
     height: 400px;
     width: 400px;
@@ -19,8 +23,11 @@
 
   .additInfo{
     text-align: left;
+    border-bottom: 3px solid black;
+   padding-bottom: 10px;
   }
 
   .additInfoLink{
     text-decoration: underline;
+    
   }
