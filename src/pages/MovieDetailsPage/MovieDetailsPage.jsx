@@ -11,15 +11,30 @@ function MovieDetailsPage({
   searchedMovies,
   genresData,
   getGenres,
+  movieIdData,
+  getmovieIdData
 }) {
   const { id } = useParams();
   const location = useLocation();
 
   const backLinkHref = location.state ?? "/";
   const pathToImage = "https://image.tmdb.org/t/p/w500/";
-  const listToRender = [...trendMovies, ...searchedMovies];
+  const listOfMovies = [...trendMovies, ...searchedMovies];
 
-  const selectedMovie = listToRender.find((movie) => +movie.id === +id);
+  let selectedMovie = listOfMovies.find((movie) => +movie.id === +id);
+
+  useEffect(() => {
+    if ((!id)&&(!(listOfMovies.length===0))) {return}
+getmovieIdData(id);
+  }, []);
+
+  useEffect(() => {
+   getGenres();
+  }, []);
+
+  selectedMovie ?? movieIdData;
+
+
   const {
     poster_path,
     title,
@@ -28,9 +43,7 @@ function MovieDetailsPage({
     overview,
     genre_ids,
   } = selectedMovie;
-  useEffect(() => {
-    getGenres();
-  }, []);
+
 
   return (
     <main>

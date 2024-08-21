@@ -13,8 +13,9 @@ function MovieCast({getCasts,castsData}) {
     
 
     useEffect(() => {
+        if (!id) {return}
         getCasts(queryParams)
-      },[])
+      },[id])
  
 
     return (

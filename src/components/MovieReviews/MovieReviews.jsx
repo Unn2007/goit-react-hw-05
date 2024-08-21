@@ -11,8 +11,9 @@ function MovieReviews({getReviews,reviwesData}) {
       };
 
       useEffect(() => {
+        if (!id) {return}
         getReviews(queryParams)
-      },[])
+      },[id])
   
     isReviews=Boolean(reviwesData.length)
    

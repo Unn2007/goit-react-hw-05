@@ -17,6 +17,7 @@ function App() {
   const [moviesList, setMoviesList] = useState([]);
   const [genres, setGenres] = useState([]);
   const [moviesSearchList,setmoviesSearchList]=useState([])
+  const [movieById, setmovieById] = useState([]);
 
   const [queryData, setQueryData] = useState({});
   const [casts, setCasts] = useState([]);
@@ -30,6 +31,16 @@ function App() {
     };
     setQueryData({ ...queryParams });
   } 
+
+  function getMovieById(movieId) {
+    const queryParams = {
+      path: `movie/${movieId}`,
+      dataKey: "results",
+      setData: setmovieById,
+    };
+    setQueryData({ ...queryParams });
+
+  }
 
 
 
@@ -73,7 +84,7 @@ function App() {
 
         if (path) {
           const data = await fetchMovies(path);
-         
+         console.log(data)
 
           setData(() => {
             return [...data[dataKey]];
@@ -113,6 +124,8 @@ function App() {
               searchedMovies={moviesSearchList}
               getGenres={getGenreList}
               genresData={genres}
+              movieIdData={movieById}
+              getmovieIdData={getMovieById}
             />
           }
         >
