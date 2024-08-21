@@ -11,8 +11,8 @@ function MovieDetailsPage({ movies,searchedMovies, genresData, getGenres }) {
    
   const backLinkHref = location.state ?? "/";
   const pathToImage = "https://image.tmdb.org/t/p/w500/";
-  const listToRender= ((location?.state?.pathname==="/movies"))?searchedMovies:movies
-  console.log(location)
+  const listToRender= [...movies,...searchedMovies]
+
   const selectedMovie = listToRender.find((movie) => +movie.id === +id);
   const {poster_path,title,release_date,vote_average,overview,genre_ids}=selectedMovie
   useEffect(() => {
@@ -38,10 +38,10 @@ function MovieDetailsPage({ movies,searchedMovies, genresData, getGenres }) {
 
       <ul>
         <li>
-          <Link to="casts">Casts</Link>
+          <Link to="casts" state={location}>Casts</Link>
         </li>
         <li>
-          <Link to="reviews">Reviews</Link>
+          <Link to="reviews" state={location}>Reviews</Link>
         </li>
        
       </ul>

@@ -10,6 +10,7 @@ export const SearchBox = ({  onSearch,setQueryParams }) => {
    
     onSearch(value.value)
     setQueryParams(value.value);
+   
     form.reset();
 
     }
