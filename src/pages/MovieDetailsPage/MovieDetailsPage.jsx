@@ -5,12 +5,15 @@ import formatCreateDate from "../../utils/formatDate";
 import genresNames from "../../utils/genresNames";
 import  BackLink  from "../../components/BackLink/BackLink";
 
-function MovieDetailsPage({ movies, genresData, getGenres }) {
+function MovieDetailsPage({ movies,searchedMovies, genresData, getGenres }) {
   const { id } = useParams();
   const location = useLocation();
+   
   const backLinkHref = location.state ?? "/";
   const pathToImage = "https://image.tmdb.org/t/p/w500/";
-  const selectedMovie = movies.find((movie) => +movie.id === +id);
+  const listToRender= ((location?.state?.pathname==="/movies"))?searchedMovies:movies
+  console.log(location)
+  const selectedMovie = listToRender.find((movie) => +movie.id === +id);
   const {poster_path,title,release_date,vote_average,overview,genre_ids}=selectedMovie
   useEffect(() => {
     getGenres();
