@@ -6,44 +6,30 @@ import genresNames from "../../utils/genresNames";
 import BackLink from "../../components/BackLink/BackLink";
 import css from "./MovieDetailsPage.module.css";
 
-function MovieDetailsPage({
-  trendMovies,
-  searchedMovies,
-  genresData,
-  getGenres,
-  movieIdData,
-  getmovieIdData
-}) {
+function MovieDetailsPage({ movieIdData, getmovieIdData }) {
   const { id } = useParams();
   const location = useLocation();
 
   const backLinkHref = location.state ?? "/";
   const pathToImage = "https://image.tmdb.org/t/p/w500/";
-  const listOfMovies = [...trendMovies, ...searchedMovies];
-
-  let selectedMovie = listOfMovies.find((movie) => +movie.id === +id);
 
   useEffect(() => {
-    if ((!id)&&(!(listOfMovies.length===0))) {return}
-getmovieIdData(id);
-  }, []);
+    if (!id) {
+      return;
+    }
+    getmovieIdData(id);
+  }, [id]);
 
-  useEffect(() => {
-   getGenres();
-  }, []);
+  console.log(movieIdData);
 
-  selectedMovie ?? movieIdData;
-
-
-  const {
-    poster_path,
-    title,
-    release_date,
-    vote_average,
-    overview,
-    genre_ids,
-  } = selectedMovie;
-
+  // const {
+  //   poster_path,
+  //   title,
+  //   release_date,
+  //   vote_average,
+  //   overview,
+  //   genres,
+  // } = movieIdData;
 
   return (
     <main>
@@ -56,16 +42,16 @@ getmovieIdData(id);
           <div className={css.thumb}>
             <img
               className={css.posterImage}
-              src={`${pathToImage}${poster_path}`}
+              src={`${pathToImage}${movieIdData?.poster_path}`}
             />
           </div>
           <div className={css.movieInfo}>
-            <h2>{`${title} (${formatCreateDate(release_date)})`}</h2>
-            <p>{`User Score: ${Math.round(vote_average * 10)}%`}</p>
+            <h2>{`${movieIdData?.title} (${formatCreateDate(movieIdData?.release_date)})`}</h2>
+            <p>{`User Score: ${Math.round(movieIdData?.vote_average * 10)}%`}</p>
             <h3>Overview</h3>
-            <p>{overview}</p>
+            <p>{movieIdData?.overview}</p>
             <h3>Genres</h3>
-            <p>{`${genresNames(genresData, genre_ids)}`}</p>
+            <p>{`${genresNames(movieIdData?.genres)}`}</p>
           </div>
         </div>
 

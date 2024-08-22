@@ -1,23 +1,23 @@
 import { Routes, Route, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import HomePage from './pages/HomePage/HomePage';
-import MoviesPage from './pages/MoviesPage/MoviesPage'
-import MovieDetailsPage from './pages/MovieDetailsPage/MovieDetailsPage';
-import Navigation from './components/Navigation/Navigation';
+import HomePage from "./pages/HomePage/HomePage";
+import MoviesPage from "./pages/MoviesPage/MoviesPage";
+import MovieDetailsPage from "./pages/MovieDetailsPage/MovieDetailsPage";
+import Navigation from "./components/Navigation/Navigation";
 
-import MovieCast from './components/MovieCast/MovieCast';
-import MovieReviews from './components/MovieReviews/MovieReviews';
-import './App.css';
+import MovieCast from "./components/MovieCast/MovieCast";
+import MovieReviews from "./components/MovieReviews/MovieReviews";
+import "./App.css";
 
 import fetchMovies from "./utils/movies-api";
 function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [moviesList, setMoviesList] = useState([]);
-  const [genres, setGenres] = useState([]);
-  const [moviesSearchList,setmoviesSearchList]=useState([])
-  const [movieById, setmovieById] = useState([]);
+
+  const [moviesSearchList, setmoviesSearchList] = useState([]);
+  const [movieById, setmovieById] = useState();
 
   const [queryData, setQueryData] = useState({});
   const [casts, setCasts] = useState([]);
@@ -30,19 +30,17 @@ function App() {
       setData: setmoviesSearchList,
     };
     setQueryData({ ...queryParams });
-  } 
+  }
 
   function getMovieById(movieId) {
     const queryParams = {
       path: `movie/${movieId}`,
-      dataKey: "results",
+      dataKey: "",
       setData: setmovieById,
     };
+
     setQueryData({ ...queryParams });
-
   }
-
-
 
   function getMovieList() {
     const queryParams = {
@@ -60,15 +58,6 @@ function App() {
     setQueryData({ ...params, ...queryParams });
   }
 
-  function getGenreList() {
-    const queryParams = {
-      path: "genre/movie/list",
-      dataKey: "genres",
-      setData: setGenres,
-    };
-    setQueryData({ ...queryParams });
-  }
-
   function getReviewsData(params) {
     const queryParams = {
       setData: setReviewes,
@@ -84,11 +73,16 @@ function App() {
 
         if (path) {
           const data = await fetchMovies(path);
-         console.log(data)
 
-          setData(() => {
-            return [...data[dataKey]];
-          });
+          if (dataKey) {
+            setData(() => {
+              return [...data[dataKey]];
+            });
+          } else {
+            setData(() => {
+              return { ...data };
+            });
+          }
         }
       } catch (error) {
         setError(true);
@@ -114,16 +108,20 @@ function App() {
             />
           }
         />
-        <Route path="/movies" element={<MoviesPage makeSearch={getSearchResult} searcResult={moviesSearchList} />} />
-        
+        <Route
+          path="/movies"
+          element={
+            <MoviesPage
+              makeSearch={getSearchResult}
+              searcResult={moviesSearchList}
+            />
+          }
+        />
+
         <Route
           path="/movies/:id"
           element={
-            <MovieDetailsPage 
-            trendMovies={moviesList}
-              searchedMovies={moviesSearchList}
-              getGenres={getGenreList}
-              genresData={genres}
+            <MovieDetailsPage
               movieIdData={movieById}
               getmovieIdData={getMovieById}
             />
@@ -136,7 +134,7 @@ function App() {
           <Route
             path="reviews"
             element={
-              <MovieReviews getReviews={getReviewsData} reviwesData={reviwes}  />
+              <MovieReviews getReviews={getReviewsData} reviwesData={reviwes} />
             }
           />
         </Route>
