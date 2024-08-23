@@ -1,33 +1,31 @@
 .movieDetalies {
-    display: flex;
-   gap:  20px;
-   border-bottom: 3px solid black;
-   padding-bottom: 10px;
+  display: flex;
+  gap: 20px;
+  border-bottom: 3px solid black;
+  padding-bottom: 10px;
 }
 
-
 .thumb {
-    height: 400px;
-    width: 400px;
-  }
+  height: 400px;
+  width: 400px;
+}
 
-  .posterImage {
-    display: block;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
-  .movieInfo{
-    text-align: left;
-  }
+.posterImage {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.movieInfo {
+  text-align: left;
+}
 
-  .additInfo{
-    text-align: left;
-    border-bottom: 3px solid black;
-   padding-bottom: 10px;
-  }
+.additInfo {
+  text-align: left;
+  border-bottom: 3px solid black;
+  padding-bottom: 10px;
+}
 
-  .additInfoLink{
-    text-decoration: underline;
-    
-  }
+.additInfoLink {
+  text-decoration: underline;
+}

@@ -1,15 +1,14 @@
-import BackLink  from "../../components/BackLink/BackLink";
+import BackLink from "../../components/BackLink/BackLink";
 
 function NotFoundPage() {
-return (
+  return (
     <main>
-        <div>
-            <p>Nothing find!</p>
-            <BackLink to={"./"}>Go home</BackLink>
-
-        </div>
+      <div>
+        <p>Nothing find!</p>
+        <BackLink to={"./"}>Go home</BackLink>
+      </div>
     </main>
-)
+  );
 }
 
 export default NotFoundPage;

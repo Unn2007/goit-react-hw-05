@@ -1,11 +1,11 @@
 .thumb {
-    height: 250px;
-    width: 150px;
-  }
+  height: 250px;
+  width: 150px;
+}
 
-  .actorFoto {
-    display: block;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
+.actorFoto {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}

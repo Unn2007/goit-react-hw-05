@@ -1,13 +1,12 @@
 .link {
-    display: inline-flex;
-    justify-content: start;
-    align-items: center;
-    border: 1px solid black;
-    padding:  5px;
+  display: inline-flex;
+  justify-content: start;
+  align-items: center;
+  border: 1px solid black;
+  padding: 5px;
 }
 
 .linkContainer {
-    text-align: left;
-    padding: 5px;
-   
+  text-align: left;
+  padding: 5px;
 }

@@ -1,14 +1,14 @@
 .nav {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 10px;
-    justify-content: start;
-    align-items: center;
-    padding: 10px 10px;
-    border-bottom: 3px solid grey;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+  justify-content: start;
+  align-items: center;
+  padding: 10px 10px;
+  border-bottom: 3px solid grey;
 }
 
 .active {
-    color: red;
+  color: red;
 }
