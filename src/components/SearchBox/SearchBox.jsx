@@ -1,4 +1,4 @@
-
+import toast, { Toaster } from "react-hot-toast";
 import css from './SearchBox.module.css';
 
 export const SearchBox = ({  onSearch,setQueryParams }) => {
@@ -7,9 +7,17 @@ export const SearchBox = ({  onSearch,setQueryParams }) => {
         event.preventDefault()
         const form = event.target;
     const { value } = form.elements;
+    const inputValue = value.value.trim()
+    if (inputValue === "") {
+      toast.error("Please enter search term!", {
+        position: "top-right",
+      });
+
+      return;
+    }
    
-    onSearch(value.value)
-    setQueryParams(value.value);
+    onSearch(inputValue)
+    setQueryParams(inputValue);
    
     form.reset();
 
@@ -19,7 +27,7 @@ export const SearchBox = ({  onSearch,setQueryParams }) => {
 
   return (
     <form className={css.wrapper} onSubmit={handleSubmit}>
-       
+        <Toaster />
       
       <input
         className={css.input}

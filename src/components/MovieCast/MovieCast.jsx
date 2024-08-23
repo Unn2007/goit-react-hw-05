@@ -5,6 +5,7 @@ import css from './MovieCast.module.css'
 
 function MovieCast({getCasts,castsData}) {
     const { id } = useParams();
+    const isCasts= (castsData.length===0)
     const queryParams = {
         path: `movie/${id}/credits`,
         dataKey: "cast",
@@ -16,10 +17,14 @@ function MovieCast({getCasts,castsData}) {
         if (!id) {return}
         getCasts(queryParams)
       },[id])
+
+      
  
 
     return (
         <div>
+            {(isCasts)&&(<p>"We do not have any casts info for this movie"</p>)}
+
             <ul>
                 {castsData.map(({character,name,profile_path,id})=>{
                     const imagePath = (profile_path)?`https://image.tmdb.org/t/p/w500/${profile_path}`:imagePlaceholder

@@ -114,6 +114,7 @@ function App() {
             <MoviesPage
               makeSearch={getSearchResult}
               searcResult={moviesSearchList}
+              isLoading={loading}
             />
           }
         />
@@ -124,6 +125,7 @@ function App() {
             <MovieDetailsPage
               movieIdData={movieById}
               getmovieIdData={getMovieById}
+              isLoading={loading}
             />
           }
         >

@@ -1,18 +1,20 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
+import { InfinitySpin } from "react-loader-spinner";
 import formatCreateDate from "../../utils/formatDate";
 import genresNames from "../../utils/genresNames";
 import BackLink from "../../components/BackLink/BackLink";
 import css from "./MovieDetailsPage.module.css";
+import imagePlaceholder from '../../assets/hole.jpg'
 
-function MovieDetailsPage({ movieIdData, getmovieIdData }) {
+function MovieDetailsPage({ movieIdData, getmovieIdData, isLoading }) {
   const { id } = useParams();
   const location = useLocation();
 
   const backLinkHref = location.state ?? "/";
   const pathToImage = "https://image.tmdb.org/t/p/w500/";
-
+  
   useEffect(() => {
     if (!id) {
       return;
@@ -20,16 +22,11 @@ function MovieDetailsPage({ movieIdData, getmovieIdData }) {
     getmovieIdData(id);
   }, [id]);
 
-  console.log(movieIdData);
+  const imagePath = (movieIdData?.poster_path) ?
+  `${pathToImage}${movieIdData?.poster_path}` :
+  imagePlaceholder
 
-  // const {
-  //   poster_path,
-  //   title,
-  //   release_date,
-  //   vote_average,
-  //   overview,
-  //   genres,
-  // } = movieIdData;
+  
 
   return (
     <main>
@@ -37,12 +34,19 @@ function MovieDetailsPage({ movieIdData, getmovieIdData }) {
         
 
         <BackLink to={backLinkHref}  >Go back</BackLink>
-        
+        {isLoading && (
+        <InfinitySpin
+          visible={true}
+          width="100"
+          color="#4fa94d"
+          ariaLabel="infinity-spin-loading"
+        />
+      )}
         <div className={css.movieDetalies}>
           <div className={css.thumb}>
             <img
               className={css.posterImage}
-              src={`${pathToImage}${movieIdData?.poster_path}`}
+              src={imagePath}
             />
           </div>
           <div className={css.movieInfo}>
@@ -60,12 +64,12 @@ function MovieDetailsPage({ movieIdData, getmovieIdData }) {
 
           <ul>
             <li>
-              <Link to="casts" state={location} className={css.additInfoLink}>
+              <Link to="casts"  className={css.additInfoLink}>
                 Casts
               </Link>
             </li>
             <li>
-              <Link to="reviews" state={location} className={css.additInfoLink}>
+              <Link to="reviews"  className={css.additInfoLink}>
                 Reviews
               </Link>
             </li>
