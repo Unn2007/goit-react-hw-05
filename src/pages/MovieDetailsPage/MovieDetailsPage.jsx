@@ -1,5 +1,5 @@
 import { useParams, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect,useRef } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { InfinitySpin } from "react-loader-spinner";
 import formatCreateDate from "../../utils/formatDate";
@@ -12,7 +12,7 @@ function MovieDetailsPage({ movieIdData, getmovieIdData, isLoading }) {
   const { id } = useParams();
   const location = useLocation();
 
-  const backLinkHref = location.state ?? "/";
+  const backLinkHref =useRef(location.state ?? "/");
   const pathToImage = "https://image.tmdb.org/t/p/w500/";
   
   useEffect(() => {
@@ -33,7 +33,7 @@ function MovieDetailsPage({ movieIdData, getmovieIdData, isLoading }) {
       <div>
         
 
-        <BackLink to={backLinkHref}  >Go back</BackLink>
+        <BackLink to={backLinkHref.current}  >Go back</BackLink>
         {isLoading && (
         <InfinitySpin
           visible={true}

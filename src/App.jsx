@@ -1,24 +1,26 @@
-import { Routes, Route, NavLink } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
+
 
 import HomePage from "./pages/HomePage/HomePage";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MovieDetailsPage from "./pages/MovieDetailsPage/MovieDetailsPage";
 import Navigation from "./components/Navigation/Navigation";
-
 import MovieCast from "./components/MovieCast/MovieCast";
 import MovieReviews from "./components/MovieReviews/MovieReviews";
-import "./App.css";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
+import "./App.css";
 import fetchMovies from "./utils/movies-api";
+
+
 function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [moviesList, setMoviesList] = useState([]);
-
   const [moviesSearchList, setmoviesSearchList] = useState([]);
   const [movieById, setmovieById] = useState();
-
   const [queryData, setQueryData] = useState({});
   const [casts, setCasts] = useState([]);
   const [reviwes, setReviewes] = useState([]);
@@ -38,7 +40,6 @@ function App() {
       dataKey: "",
       setData: setmovieById,
     };
-
     setQueryData({ ...queryParams });
   }
 
@@ -70,7 +71,6 @@ function App() {
       try {
         setError(false);
         setLoading(true);
-
         if (path) {
           const data = await fetchMovies(path);
 
@@ -86,6 +86,9 @@ function App() {
         }
       } catch (error) {
         setError(true);
+        toast.error("Error.Try again.", {
+          position: "top-right",
+        });
       } finally {
         setLoading(false);
       }
@@ -96,7 +99,10 @@ function App() {
 
   return (
     <>
+
+
       <Navigation />
+      {error&&<Toaster/>}
       <Routes>
         <Route
           path="/"
@@ -141,7 +147,7 @@ function App() {
           />
         </Route>
 
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );
