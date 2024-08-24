@@ -1,71 +1,57 @@
-import { useParams, useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { useParams, useLocation, Outlet, Link } from "react-router-dom";
+import { useEffect, useRef, Suspense } from "react";
+import { InfinitySpin } from "react-loader-spinner";
 import formatCreateDate from "../../utils/formatDate";
 import genresNames from "../../utils/genresNames";
 import BackLink from "../../components/BackLink/BackLink";
 import css from "./MovieDetailsPage.module.css";
+import imagePlaceholder from "../../assets/hole.jpg";
 
-function MovieDetailsPage({
-  trendMovies,
-  searchedMovies,
-  genresData,
-  getGenres,
-  movieIdData,
-  getmovieIdData
-}) {
+function MovieDetailsPage({ movieIdData, getmovieIdData, isLoading }) {
   const { id } = useParams();
   const location = useLocation();
 
-  const backLinkHref = location.state ?? "/";
+  const backLinkHref = useRef(location.state ?? "/");
   const pathToImage = "https://image.tmdb.org/t/p/w500/";
-  const listOfMovies = [...trendMovies, ...searchedMovies];
-
-  let selectedMovie = listOfMovies.find((movie) => +movie.id === +id);
 
   useEffect(() => {
-    if ((!id)&&(!(listOfMovies.length===0))) {return}
-getmovieIdData(id);
-  }, []);
+    if (!id) {
+      return;
+    }
+    getmovieIdData(id);
+  }, [id]);
 
-  useEffect(() => {
-   getGenres();
-  }, []);
-
-  selectedMovie ?? movieIdData;
-
-
-  const {
-    poster_path,
-    title,
-    release_date,
-    vote_average,
-    overview,
-    genre_ids,
-  } = selectedMovie;
-
+  const imagePath = movieIdData?.poster_path
+    ? `${pathToImage}${movieIdData?.poster_path}`
+    : imagePlaceholder;
 
   return (
     <main>
       <div>
-        
-
-        <BackLink to={backLinkHref}  >Go back</BackLink>
-        
+        <BackLink to={backLinkHref.current}>Go back</BackLink>
+        {isLoading && (
+          <InfinitySpin
+            visible={true}
+            width="100"
+            color="#4fa94d"
+            ariaLabel="infinity-spin-loading"
+          />
+        )}
         <div className={css.movieDetalies}>
           <div className={css.thumb}>
-            <img
-              className={css.posterImage}
-              src={`${pathToImage}${poster_path}`}
-            />
+            <img className={css.posterImage} src={imagePath} />
           </div>
           <div className={css.movieInfo}>
-            <h2>{`${title} (${formatCreateDate(release_date)})`}</h2>
-            <p>{`User Score: ${Math.round(vote_average * 10)}%`}</p>
+            <h2>{`${movieIdData?.title} (${formatCreateDate(
+              movieIdData?.release_date
+            )})`}</h2>
+            <p>{`User Score: ${Math.round(
+              movieIdData?.vote_average * 10
+            )}%`}</p>
             <h3>Overview</h3>
-            <p>{overview}</p>
+            <p>{movieIdData?.overview}</p>
             <h3>Genres</h3>
-            <p>{`${genresNames(genresData, genre_ids)}`}</p>
+            <p>{`${genresNames(movieIdData?.genres)}`}</p>
           </div>
         </div>
 
@@ -74,17 +60,19 @@ getmovieIdData(id);
 
           <ul>
             <li>
-              <Link to="casts" state={location} className={css.additInfoLink}>
+              <Link to="casts" className={css.additInfoLink}>
                 Casts
               </Link>
             </li>
             <li>
-              <Link to="reviews" state={location} className={css.additInfoLink}>
+              <Link to="reviews" className={css.additInfoLink}>
                 Reviews
               </Link>
             </li>
           </ul>
-          <Outlet />
+          <Suspense fallback={<div>Loading subpage...</div>}>
+            <Outlet />
+          </Suspense>
         </div>
       </div>
     </main>

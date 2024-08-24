@@ -1,7 +1,9 @@
 import { format } from "date-fns";
 
 const formatCreateDate = (date) => {
-  return format(Date.parse(date), `yyyy`);
+  if (date) { return format(Date.parse(date), `yyyy`); }
+  return "";
+ 
 };
 
 export default formatCreateDate;
