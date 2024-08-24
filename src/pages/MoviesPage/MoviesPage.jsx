@@ -1,9 +1,10 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { InfinitySpin } from "react-loader-spinner";
 import css from "./MoviesPage.module.css";
 import SearchBox from "../../components/SearchBox/SearchBox";
 import MovieList from "../../components/MovieList/MovieList";
-import { InfinitySpin } from "react-loader-spinner";
+
 function MoviesPage({ searcResult, makeSearch, isLoading }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryString = searchParams.get("query") ?? "";

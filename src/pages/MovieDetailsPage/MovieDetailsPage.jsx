@@ -1,6 +1,5 @@
 import { useParams, useLocation, Outlet, Link } from "react-router-dom";
-import { useEffect, useRef } from "react";
-import { Suspense } from "react";
+import { useEffect, useRef, Suspense } from "react";
 import { InfinitySpin } from "react-loader-spinner";
 import formatCreateDate from "../../utils/formatDate";
 import genresNames from "../../utils/genresNames";
