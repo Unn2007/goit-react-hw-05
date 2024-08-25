@@ -1,7 +1,7 @@
 import toast, { Toaster } from "react-hot-toast";
 import css from "./SearchBox.module.css";
 
-export const SearchBox = ({ onSearch, setQueryParams }) => {
+export const SearchBox = ({ setQueryParams }) => {
   function handleSubmit(event) {
     event.preventDefault();
     const form = event.target;
@@ -15,7 +15,6 @@ export const SearchBox = ({ onSearch, setQueryParams }) => {
       return;
     }
 
-    onSearch(inputValue);
     setQueryParams(inputValue);
 
     form.reset();
