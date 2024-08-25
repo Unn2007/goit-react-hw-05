@@ -1,13 +1,18 @@
 import { useParams, useLocation, Outlet, Link } from "react-router-dom";
-import { useEffect, useRef, Suspense } from "react";
+import { useEffect, useRef, Suspense, useState } from "react";
 import { InfinitySpin } from "react-loader-spinner";
 import formatCreateDate from "../../utils/formatDate";
 import genresNames from "../../utils/genresNames";
 import BackLink from "../../components/BackLink/BackLink";
 import css from "./MovieDetailsPage.module.css";
 import imagePlaceholder from "../../assets/hole.jpg";
+import getData from "../../utils/getData";
 
-function MovieDetailsPage({ movieIdData, getmovieIdData, isLoading }) {
+function MovieDetailsPage() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [movieById, setmovieById] = useState();
+
   const { id } = useParams();
   const location = useLocation();
 
@@ -18,18 +23,30 @@ function MovieDetailsPage({ movieIdData, getmovieIdData, isLoading }) {
     if (!id) {
       return;
     }
-    getmovieIdData(id);
+    function getMovieById(movieId) {
+      const queryParams = {
+        path: `movie/${movieId}`,
+        dataKey: "",
+        setData: setmovieById,
+        setError: setError,
+        setLoading: setLoading,
+      };
+      getData({ ...queryParams });
+    }
+
+    getMovieById(id);
   }, [id]);
 
-  const imagePath = movieIdData?.poster_path
-    ? `${pathToImage}${movieIdData?.poster_path}`
+  const imagePath = movieById?.poster_path
+    ? `${pathToImage}${movieById?.poster_path}`
     : imagePlaceholder;
 
   return (
     <main>
       <div>
         <BackLink to={backLinkHref.current}>Go back</BackLink>
-        {isLoading && (
+        {error && <Toaster />}
+        {loading && (
           <InfinitySpin
             visible={true}
             width="100"
@@ -42,16 +59,14 @@ function MovieDetailsPage({ movieIdData, getmovieIdData, isLoading }) {
             <img className={css.posterImage} src={imagePath} />
           </div>
           <div className={css.movieInfo}>
-            <h2>{`${movieIdData?.title} (${formatCreateDate(
-              movieIdData?.release_date
+            <h2>{`${movieById?.title} (${formatCreateDate(
+              movieById?.release_date
             )})`}</h2>
-            <p>{`User Score: ${Math.round(
-              movieIdData?.vote_average * 10
-            )}%`}</p>
+            <p>{`User Score: ${Math.round(movieById?.vote_average * 10)}%`}</p>
             <h3>Overview</h3>
-            <p>{movieIdData?.overview}</p>
+            <p>{movieById?.overview}</p>
             <h3>Genres</h3>
-            <p>{`${genresNames(movieIdData?.genres)}`}</p>
+            <p>{`${genresNames(movieById?.genres)}`}</p>
           </div>
         </div>
 

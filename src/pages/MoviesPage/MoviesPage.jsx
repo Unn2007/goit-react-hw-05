@@ -1,27 +1,45 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { InfinitySpin } from "react-loader-spinner";
+import { Toaster } from "react-hot-toast";
 import css from "./MoviesPage.module.css";
 import SearchBox from "../../components/SearchBox/SearchBox";
 import MovieList from "../../components/MovieList/MovieList";
 
-function MoviesPage({ searcResult, makeSearch, isLoading }) {
+import getData from "../../utils/getData";
+function MoviesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [moviesSearchList, setmoviesSearchList] = useState([]);
   const queryString = searchParams.get("query") ?? "";
-
   const updateQueryString = (value) => {
     const nextParams = value !== "" ? { query: value } : {};
     setSearchParams(nextParams);
   };
+
   useEffect(() => {
-    if (queryString !== "") {
-      makeSearch(queryString);
+    function getSearchResult(name) {
+      if (name == "") {
+        return;
+      }
+      const queryParams = {
+        path: `search/movie?query=${name}`,
+        dataKey: "results",
+        setData: setmoviesSearchList,
+        setError: setError,
+        setLoading: setLoading,
+      };
+      getData({ ...queryParams });
     }
+
+    getSearchResult(queryString);
   }, [searchParams]);
 
   return (
     <main>
-      {isLoading && (
+      {error && <Toaster />}
+      {loading && (
         <InfinitySpin
           visible={true}
           width="100"
@@ -30,8 +48,8 @@ function MoviesPage({ searcResult, makeSearch, isLoading }) {
         />
       )}
       <div className={css.moviesPage}>
-        <SearchBox onSearch={makeSearch} setQueryParams={updateQueryString} />
-        <MovieList movies={searcResult} />
+        <SearchBox setQueryParams={updateQueryString} />
+        <MovieList movies={moviesSearchList} />
       </div>
     </main>
   );
